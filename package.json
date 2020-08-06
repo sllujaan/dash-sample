@@ -4,7 +4,8 @@
   "description": "media dash sample.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy":"gh-pages -d client"
   },
   "repository": {
     "type": "git",
@@ -16,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/sllujaan/dash-sample/issues"
   },
-  "homepage": "https://github.com/sllujaan/dash-sample#readme"
+  "homepage": "https://sllujaan.github.io/dash-sample",
+  "dependencies": {
+    "gh-pages": "^3.1.0"
+  }
 }
