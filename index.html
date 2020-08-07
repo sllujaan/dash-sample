@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <link rel="stylesheet" href="./seeker.css">
+
     <script src="./third-party/shaka-player.compiled.js"></script>
+
 
     <title>Shaka-player</title>
 </head>
@@ -17,106 +20,152 @@
     <audio id="video"
     controls></audio>
 
+    
+
+    <br>
+    <br>
+    <br>
+    <div class="seeker-container">
+        
+        <div class="seeker" style="position: relative;">
+            <div id="buffer-seeker" class="buffer" style="left: 0%; width: 20%;"></div>
+            <!-- <div class="buffer" style="left: 30%; width: 20%;"></div> -->
+            <div class="progress"></div>
+            <!-- <div class="buffer"></div> -->
+        </div>
+        
+    </div>
+    <br>
+    <br>
+    <br>
+
+
     <div id="buffering" class="buffering"></div>
     <div class="media-state"></div>
     
     
 <script>
-    var el_buffer = document.getElementsByClassName('buffering')[0]
-    var el_mediaState = document.getElementsByClassName('media-state')[0]
-    const video = document.getElementById('video');
-    const manifestUri = 'h264.mpd';
-    console.log(manifestUri)
+    // var el_buffer = document.getElementsByClassName('buffering')[0]
+    // var el_mediaState = document.getElementsByClassName('media-state')[0]
+    // const video = document.getElementById('video');
+    // const manifestUri = 'h264.mpd';
+    // console.log(manifestUri)
 
-    function initApp() {
-        // Install built-in polyfills to patch browser incompatibilities.
-        shaka.polyfill.installAll();
+    // function initApp() {
+    //     // Install built-in polyfills to patch browser incompatibilities.
+    //     shaka.polyfill.installAll();
 
-        // Check to see if the browser supports the basic APIs Shaka needs.
-        if (shaka.Player.isBrowserSupported()) {
-            // Everything looks good!
-            initPlayer();
-        } else {
-            // This browser does not have the minimum set of APIs we need.
-            console.error('Browser not supported!');
-        }
-    }
+    //     // Check to see if the browser supports the basic APIs Shaka needs.
+    //     if (shaka.Player.isBrowserSupported()) {
+    //         // Everything looks good!
+    //         initPlayer();
+    //     } else {
+    //         // This browser does not have the minimum set of APIs we need.
+    //         console.error('Browser not supported!');
+    //     }
+    // }
 
-    async function initPlayer() {
-        // Create a Player instance.
+    // async function initPlayer() {
+    //     // Create a Player instance.
         
-        const player = new shaka.Player(video);
+    //     const player = new shaka.Player(video);
 
-        // set the rebuffering goal to 15 seconds and revert buffering goal to default:
-        player.configure({
-        streaming: {
-            bufferingGoal: 2,
-            rebufferingGoal: 2,
-            bufferBehind: 2
-        }
-        });
+    //     // set the rebuffering goal to 15 seconds and revert buffering goal to default:
+    //     player.configure({
+    //     streaming: {
+    //         bufferingGoal: 10,
+    //         rebufferingGoal: 2,
+    //         bufferBehind: 2
+    //     }
+    //     });
 
-        // Attach player to the window to make it easy to access in the JS console.
-        window.player = player;
+    //     // Attach player to the window to make it easy to access in the JS console.
+    //     window.player = player;
 
-        // Listen for error events.
-        player.addEventListener('error', onErrorEvent);
+    //     // Listen for error events.
+    //     player.addEventListener('error', onErrorEvent);
 
-        // Try to load a manifest.
-        // This is an asynchronous process.
-        try {
-            await player.load(manifestUri);
-            // This runs if the asynchronous load is successful.
-            console.log('The video has now been loaded!');
-            console.log(player.getConfiguration())
-            console.log(player)
-            initEvents(player)
-        } catch (e) {
-            // onError is executed if the asynchronous load fails.
-            onError(e);
-        }
-    }
+    //     // Try to load a manifest.
+    //     // This is an asynchronous process.
+    //     try {
+    //         await player.load(manifestUri);
+    //         // This runs if the asynchronous load is successful.
+    //         console.log('The video has now been loaded!');
+    //         console.log(player.getConfiguration())
+    //         console.log(player)
+    //         initEvents(player)
+    //     } catch (e) {
+    //         // onError is executed if the asynchronous load fails.
+    //         onError(e);
+    //     }
+    // }
 
-    function onErrorEvent(event) {
-        // Extract the shaka.util.Error object from the event.
-        onError(event.detail);
-    }
+    // function onErrorEvent(event) {
+    //     // Extract the shaka.util.Error object from the event.
+    //     onError(event.detail);
+    // }
 
-    function onError(error) {
-        // Log the error.
-        console.error('Error code', error.code, 'object', error);
-    }
+    // function onError(error) {
+    //     // Log the error.
+    //     console.error('Error code', error.code, 'object', error);
+    // }
 
-    document.addEventListener('DOMContentLoaded', initApp);
+    // document.addEventListener('DOMContentLoaded', initApp);
 
 
 
-    function initEvents(player) {
-        player.addEventListener('buffering', e => {
-            console.log('buffring', e)
-            el_buffer.innerHTML =  `buffering...`
-        })
+    // function initEvents(player) {
+    //     player.addEventListener('buffering', e => {
+    //         console.log('buffring', e)
+    //         el_buffer.innerHTML =  `buffering...`
+    //     })
 
-        setInterval(() => {
-            if(!player.isBuffering())
-            el_buffer.innerHTML =  ``
-        }, 1000);
+    //     setInterval(() => {
+    //         if(!player.isBuffering())
+    //         el_buffer.innerHTML =  ``
+    //     }, 1000);
+
+    //     player.addEventListener('streaming', e => {
+    //         console.log('streaming..>>')
+    //     })
         
-    }
+    // }
 
 
-    video.addEventListener('play', e => {
-        console.log('playing...')
-        el_mediaState.innerHTML =  `playing....`
-    })
+    // video.addEventListener('play', e => {
+    //     console.log('playing...')
+    //     el_mediaState.innerHTML =  `playing....`
+    // })
 
-    video.addEventListener('pause' , e => {
-        console.log('paused..')
-        el_mediaState.innerHTML =  `paused.`
-    })
+    // video.addEventListener('pause' , e => {
+    //     console.log('paused..')
+    //     el_mediaState.innerHTML =  `paused.`
+    // })
+
+
+    // video.addEventListener('timeupdate', e => {
+    //     console.log(player.getBufferedInfo().total[0])
+
+    //     bufferStart = player.getBufferedInfo().total[0].start
+    //     bufferEnd = player.getBufferedInfo().total[0].end
+
+    //     updateBuffer()
+    // })
+
+
+
+    // //buffering calcualtions-------
+
+    // function calculateBufferWidth(start, end) {
+    //     end - start / contianerwidht
+    // }
+
+    // //-------------------------------
 
     
 
 </script>
+
+<script src="./seeker.js"></script>
 </body>
 </html>
