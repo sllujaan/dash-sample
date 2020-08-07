@@ -1,7 +1,137 @@
 
+    var el_buffer = document.getElementsByClassName('buffering')[0]
+    var el_mediaState = document.getElementsByClassName('media-state')[0]
+    const video = document.getElementById('video');
+    const manifestUri = 'h264.mpd';
+    console.log(manifestUri)
+
+    function initApp() {
+        // Install built-in polyfills to patch browser incompatibilities.
+        shaka.polyfill.installAll();
+
+        // Check to see if the browser supports the basic APIs Shaka needs.
+        if (shaka.Player.isBrowserSupported()) {
+            // Everything looks good!
+            initPlayer();
+        } else {
+            // This browser does not have the minimum set of APIs we need.
+            console.error('Browser not supported!');
+        }
+    }
+
+    async function initPlayer() {
+        // Create a Player instance.
+        
+        const player = new shaka.Player(video);
+
+        // set the rebuffering goal to 15 seconds and revert buffering goal to default:
+        player.configure({
+        streaming: {
+            bufferingGoal: 10,
+            rebufferingGoal: 2,
+            bufferBehind: 2
+        }
+        });
+
+        // Attach player to the window to make it easy to access in the JS console.
+        window.player = player;
+
+        // Listen for error events.
+        player.addEventListener('error', onErrorEvent);
+
+        // Try to load a manifest.
+        // This is an asynchronous process.
+        try {
+            await player.load(manifestUri);
+            // This runs if the asynchronous load is successful.
+            console.log('The video has now been loaded!');
+            console.log(player.getConfiguration())
+            console.log(player)
+            initEvents(player)
+        } catch (e) {
+            // onError is executed if the asynchronous load fails.
+            onError(e);
+        }
+    }
+
+    function onErrorEvent(event) {
+        // Extract the shaka.util.Error object from the event.
+        onError(event.detail);
+    }
+
+    function onError(error) {
+        // Log the error.
+        console.error('Error code', error.code, 'object', error);
+    }
+
+    document.addEventListener('DOMContentLoaded', initApp);
+
+
+
+    function initEvents(player) {
+        player.addEventListener('buffering', e => {
+            console.log('buffring', e)
+            el_buffer.innerHTML =  `buffering...`
+        })
+
+        setInterval(() => {
+            if(!player.isBuffering())
+            el_buffer.innerHTML =  ``
+        }, 1000);
+
+        player.addEventListener('streaming', e => {
+            console.log('streaming..>>')
+        })
+        
+    }
+
+
+    video.addEventListener('play', e => {
+        console.log('playing...')
+        el_mediaState.innerHTML =  `playing....`
+    })
+
+    video.addEventListener('pause' , e => {
+        console.log('paused..')
+        el_mediaState.innerHTML =  `paused.`
+    })
+
+
+    // video.addEventListener('timeupdate', e => {
+    //     console.log(player.getBufferedInfo().total[0])
+
+        
+    // })
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//-------------------------------------------------------------------------------------------------
 var seeker_container = document.querySelector('.seeker-container')
 var progress = seeker_container.querySelector('.progress')
 var audio = document.querySelector('#video')
+var buffer_seeker = document.querySelector('#buffer-seeker')
 
 const seeker_containerCompStyles = window.getComputedStyle(seeker_container)
 const progressCompStyles = window.getComputedStyle(progress)
@@ -295,6 +425,13 @@ audio.addEventListener('timeupdate', e => {
     console.log('timeupdatedd...')
 
     if(!progressDragging) handleProgressBar(audio.currentTime, audio.duration)
+
+    console.log(player.getBufferedInfo().total[0])
+    bufferStart = player.getBufferedInfo().total[0].start
+    bufferEnd = player.getBufferedInfo().total[0].end
+
+    updateBuffer(bufferStart, bufferEnd)
+
 })
 //----------
 
@@ -327,17 +464,31 @@ function calculateTimeFromPercentage(percentage, totalTime) {
 
 
 
-console.log(el_buffer)
-console.log(player.getBufferedInfo().total[0])
 
 
+//buffering calcualtions----------------------------------------------
+
+function calculateBufferLeft() {
+    
+}
 
 
+function updateBuffer(start, end) {
+    const seeker_containerWidth = getSeekerContainerWidth()
+    const percentage = calculateBufferWidthPercentage(start, end, seeker_containerWidth)
+    console.log(percentage)
+    buffer_seeker.style.setProperty('width', `${percentage}%`)
+}
 
 
+function calculateBufferWidthPercentage(start, end, width) {
+    return ((end - start) / width) * 100
+}
+
+//-------------------------------
 
 
-
+console.log(buffer_seeker)
 
 
 
