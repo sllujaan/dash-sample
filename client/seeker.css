@@ -23,6 +23,8 @@ body {
 
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
+
+    border: 1px solid black;
     
 }
 
@@ -36,6 +38,7 @@ body {
 
     display: flex;
     flex-wrap: nowrap;
+
 }
 
 .seeker-container > .seeker > .progress {
@@ -78,6 +81,8 @@ body {
     height: 100%;
 
     top: 0;
+
+    overflow: hidden;
 
 
     /* z-index: 2000; */

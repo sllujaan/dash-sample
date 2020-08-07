@@ -27,7 +27,7 @@
         // set the rebuffering goal to 15 seconds and revert buffering goal to default:
         player.configure({
         streaming: {
-            bufferingGoal: 10,
+            bufferingGoal: 30,
             rebufferingGoal: 2,
             bufferBehind: 2
         }
@@ -468,16 +468,18 @@ function calculateTimeFromPercentage(percentage, totalTime) {
 
 //buffering calcualtions----------------------------------------------
 
-function calculateBufferLeft() {
-    
+function calculateBufferLeftPercentage(start, totalTime) {
+    return (start / totalTime) * 100
 }
 
 
 function updateBuffer(start, end) {
     const seeker_containerWidth = getSeekerContainerWidth()
     const percentage = calculateBufferWidthPercentage(start, end, seeker_containerWidth)
+    const leftPercentage = calculateBufferLeftPercentage(start, video.duration)
     console.log(percentage)
     buffer_seeker.style.setProperty('width', `${percentage}%`)
+    buffer_seeker.style.setProperty('left', `${leftPercentage}%`)
 }
 
 
