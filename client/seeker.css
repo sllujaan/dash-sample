@@ -1,6 +1,6 @@
 
 :root {
-    --z-index-seeker: 100;
+    --z-index-progress: 100;
     --z-index-buffer: 50;
     --dotCircle-right: -9px;
 
@@ -9,7 +9,7 @@
 
 body {
     padding: 0;
-    margin: 10px;
+    margin: 20px;
     user-select: none;
 }
 
@@ -98,6 +98,7 @@ body {
 .seeker-container {
     background-color: orange;
     position: relative;
+    cursor: pointer;
     
 }
 
@@ -107,7 +108,7 @@ body {
     height: 18px;
     width: 18px;
 
-    /* border-radius: 100%; */
+    border-radius: 100%;
     top: -6px;
     left: -6%;
 }
@@ -128,7 +129,7 @@ body {
     width: 40%;
     height: 5px;
 
-    z-index: var(--z-index-seeker);
+    /* z-index: var(--z-index-seeker); */
 }
 
 

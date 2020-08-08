@@ -390,7 +390,8 @@ seeker_container.addEventListener('touchmove', e => {
 
         const seeker_containerWidth = getSeekerContainerWidth()
         const clientX = e.touches[0].clientX - getContainerOffset()
-        setProgressClient(clientX, seeker_containerWidth)
+        //setProgressClient(clientX, seeker_containerWidth)
+        setProgressDotCircle(clientX, seeker_containerWidth)
     }
     
     console.log('touchmove')
@@ -409,6 +410,7 @@ seeker_container.addEventListener('touchcancel', e => {
     updateTime(percentage)
     
     progressDragging = false
+    handleOnMouseup()
 })
 
 document.addEventListener('touchend', e => {
@@ -424,6 +426,7 @@ document.addEventListener('touchend', e => {
     updateTime(percentage)
     
     progressDragging = false
+    handleOnMouseup()
 })
 
 
@@ -434,7 +437,8 @@ document.addEventListener('touchstart', e => {
         progressDragging = true
         const seeker_containerWidth = getSeekerContainerWidth()
         const clientX = e.touches[0].clientX - getContainerOffset()
-        setProgressClient(clientX, seeker_containerWidth)
+        //setProgressClient(clientX, seeker_containerWidth)
+        setProgressDotCircle(clientX, seeker_containerWidth)
     }
     
     console.log('touchstart')
@@ -542,25 +546,26 @@ function calculateTimeFromPercentage(percentage, totalTime) {
 
 //buffering calcualtions----------------------------------------------
 
-function calculateBufferLeftPercentage(start, totalTime) {
-    return (start / totalTime) * 100
-}
-
-
 function updateBuffer(start, end) {
     const seeker_containerWidth = getSeekerContainerWidth()
-    const percentage = calculateBufferWidthPercentage(start, end, seeker_containerWidth)
+    const percentage = calculateBufferWidthPercentage(start, end, video.duration)
     const leftPercentage = calculateBufferLeftPercentage(start, video.duration)
     console.log(percentage)
     console.log(leftPercentage)
+    console.log(seeker_containerWidth)
     buffer_seeker.style.setProperty('width', `${percentage}%`)
     buffer_seeker.style.setProperty('left', `${leftPercentage}%`)
 }
 
 
-function calculateBufferWidthPercentage(start, end, width) {
-    return ((end - start) / width) * 100
+function calculateBufferWidthPercentage(start, end, totalTime) {
+    return ((end - start) / totalTime) * 100
 }
+
+function calculateBufferLeftPercentage(start, totalTime) {
+    return (start / totalTime) * 100
+}
+
 
 //-------------------------------
 
@@ -570,7 +575,7 @@ console.log(buffer_seeker)
 
 
 
-
+updateDotCircle()
 
 
 
