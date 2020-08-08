@@ -132,13 +132,17 @@ var seeker_container = document.querySelector('.seeker-container')
 var progress = seeker_container.querySelector('.progress')
 var audio = document.querySelector('#video')
 var buffer_seeker = document.querySelector('#buffer-seeker')
+var dot_circle = document.querySelector('#dot-circle')
 
 const seeker_containerCompStyles = window.getComputedStyle(seeker_container)
 const progressCompStyles = window.getComputedStyle(progress)
 
 const seeker_containerWidth = parseFloat(seeker_containerCompStyles.getPropertyValue('width').split('px')[0])
 
-
+//const DOT_CIRCLE_OFFSET = -9
+const dot_width = getElementWidth(dot_circle)
+const dot_center = dot_width / 2
+console.log(dot_center)
 
 
 
@@ -150,7 +154,7 @@ console.log(progress)
 
 
 seeker_container.addEventListener('click', e => {
-
+    console.log('(((((((((((click)))))))))))')
     const seeker_containerWidth = getSeekerContainerWidth()
     //progress.style.setProperty('width', `${e.clientX + 1}px`)
     const clientX = e.clientX - getContainerOffset()
@@ -185,12 +189,31 @@ function setProgressWidth(percentage) {
 }
 
 function setProgressClient(clientX, totalWidth) {
-    const percentage = pxToPercent((clientX + 1), totalWidth)
+    const percentage = pxToPercent((clientX), totalWidth)
+    console.log(percentage)
     progress.style.setProperty('width', `${percentage}%`)
     return percentage
 }
 
+function setProgressDotCircle(clientX, totalWidth) {
+    //const percentage = pxToPercent((clientX + 1), totalWidth)
+    const clientX_new = clientX - dot_center
+    const containerOffset = getContainerOffset()
+    if( (clientX >=  0) && (clientX <= totalWidth)) dot_circle.style.setProperty('left', `${clientX_new}px`)
+    //return percentage
+    //(clientX >=  containerOffset) && 
+}
 
+function changeDotPxToPercentage() {
+    const seeker_containerWidth = getSeekerContainerWidth()
+    const dot_left = getElmentLeft(dot_circle)// + dot_center
+    const percentage = pxToPercent(dot_left, seeker_containerWidth)
+    console.log(percentage)
+    dot_circle.style.setProperty('left', `${percentage}%`)
+
+    //setProgressPercentage(percentage)
+
+}
 
 
 function pxToPercent(pixels, width) {
@@ -207,8 +230,42 @@ function setProgressPercentage(percentage) {
     progress.style.setProperty('width', `${percentage}%`)
 }
 
+function updateDotCircle() {
+
+    const width = getElementWidth(progress) - dot_center
+    dot_circle.style.setProperty('left', `${width}px`)
+}
+
+function handleOnMouseup() {
+    console.log('mouseup------------------')
+    console.log(getElmentLeft(dot_circle) + dot_center)
+    
+    const seeker_containerWidth = getSeekerContainerWidth()
+    const left = getElmentLeft(dot_circle) + dot_center
+    
+    const percentage = setProgressClient(left, seeker_containerWidth)
+    
+    updateTime(percentage)
+}
 
 
+function getElementWidth(element) {
+    const compStyles = window.getComputedStyle(element);
+    const width = parseFloat(compStyles.getPropertyValue('width').split('px')[0]);
+    return width;
+}
+
+function getElmentLeft(element) {
+    const compStyles = window.getComputedStyle(element);
+    const left = parseFloat(compStyles.getPropertyValue('left').split('px')[0]);
+    return left;
+}
+
+function getElmentRight(element) {
+    const compStyles = window.getComputedStyle(element);
+    const right = parseFloat(compStyles.getPropertyValue('right').split('px')[0]);
+    return right;
+}
 
 
 
@@ -233,8 +290,10 @@ seeker_container.addEventListener('mousemove', e => {
         progressDragging = true
         const seeker_containerWidth = getSeekerContainerWidth()
         const clientX = e.clientX - getContainerOffset()
-        const percentage = setProgressClient(clientX, seeker_containerWidth)
+        //const percentage = setProgressClient(clientX, seeker_containerWidth)
         //updateTime(percentage)
+
+        setProgressDotCircle(clientX, seeker_containerWidth)
     }
     
     console.log('mousemove')
@@ -250,6 +309,8 @@ seeker_container.addEventListener('mouseup', e => {
     mousedown = false
     mousemove = false
     progressDragging = false
+
+    handleOnMouseup()
 })
 //-----------------------------------
 
@@ -269,6 +330,8 @@ document.addEventListener('mouseup', e => {
     updateTime(percentage)
     
     progressDragging = false
+
+    handleOnMouseup()
 })
 
 document.addEventListener('dragleave', e => {
@@ -295,7 +358,9 @@ document.addEventListener('mousemove', e => {
         //setProgressClient(e.clientX)
         const seeker_containerWidth = getSeekerContainerWidth()
         const clientX = e.clientX - getContainerOffset()
-        setProgressClient(clientX, seeker_containerWidth)
+        //setProgressClient(clientX, seeker_containerWidth)
+        //setProgressDotCircle(clientX, seeker_containerWidth)
+        setProgressDotCircle(clientX, seeker_containerWidth)
     }
     
     console.log('mousemove')
@@ -325,7 +390,8 @@ seeker_container.addEventListener('touchmove', e => {
 
         const seeker_containerWidth = getSeekerContainerWidth()
         const clientX = e.touches[0].clientX - getContainerOffset()
-        setProgressClient(clientX, seeker_containerWidth)
+        //setProgressClient(clientX, seeker_containerWidth)
+        setProgressDotCircle(clientX, seeker_containerWidth)
     }
     
     console.log('touchmove')
@@ -344,6 +410,7 @@ seeker_container.addEventListener('touchcancel', e => {
     updateTime(percentage)
     
     progressDragging = false
+    handleOnMouseup()
 })
 
 document.addEventListener('touchend', e => {
@@ -359,6 +426,7 @@ document.addEventListener('touchend', e => {
     updateTime(percentage)
     
     progressDragging = false
+    handleOnMouseup()
 })
 
 
@@ -369,13 +437,22 @@ document.addEventListener('touchstart', e => {
         progressDragging = true
         const seeker_containerWidth = getSeekerContainerWidth()
         const clientX = e.touches[0].clientX - getContainerOffset()
-        setProgressClient(clientX, seeker_containerWidth)
+        //setProgressClient(clientX, seeker_containerWidth)
+        setProgressDotCircle(clientX, seeker_containerWidth)
     }
     
     console.log('touchstart')
 })
 
 //---------------------------------------------------------------------
+
+
+//window resize event---------------
+window.addEventListener('resize', e => {
+    console.log("resize")
+    updateDotCircle()
+})
+//---------------------
 
 
 
@@ -424,7 +501,8 @@ audio.addEventListener('playing', e => {
 audio.addEventListener('timeupdate', e => {
     console.log('timeupdatedd...')
 
-    if(!progressDragging) handleProgressBar(audio.currentTime, audio.duration)
+    handleProgressBar(audio.currentTime, audio.duration)
+    if(!progressDragging) updateDotCircle()
 
     console.log(player.getBufferedInfo().total[0])
     bufferStart = player.getBufferedInfo().total[0].start
@@ -442,8 +520,8 @@ function handleProgressBar(currentValue, totalValue) {
     console.log(percentage)
     if(!percentage) return
 
-    setProgressWidth(percentage)
-    
+    //setProgressWidth(percentage)
+    setProgressPercentage(percentage)
     //setProgressWidth()
 }
 
@@ -468,24 +546,26 @@ function calculateTimeFromPercentage(percentage, totalTime) {
 
 //buffering calcualtions----------------------------------------------
 
-function calculateBufferLeftPercentage(start, totalTime) {
-    return (start / totalTime) * 100
-}
-
-
 function updateBuffer(start, end) {
     const seeker_containerWidth = getSeekerContainerWidth()
-    const percentage = calculateBufferWidthPercentage(start, end, seeker_containerWidth)
+    const percentage = calculateBufferWidthPercentage(start, end, video.duration)
     const leftPercentage = calculateBufferLeftPercentage(start, video.duration)
     console.log(percentage)
+    console.log(leftPercentage)
+    console.log(seeker_containerWidth)
     buffer_seeker.style.setProperty('width', `${percentage}%`)
     buffer_seeker.style.setProperty('left', `${leftPercentage}%`)
 }
 
 
-function calculateBufferWidthPercentage(start, end, width) {
-    return ((end - start) / width) * 100
+function calculateBufferWidthPercentage(start, end, totalTime) {
+    return ((end - start) / totalTime) * 100
 }
+
+function calculateBufferLeftPercentage(start, totalTime) {
+    return (start / totalTime) * 100
+}
+
 
 //-------------------------------
 
@@ -495,7 +575,7 @@ console.log(buffer_seeker)
 
 
 
-
+updateDotCircle()
 
 
 
