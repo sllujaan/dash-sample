@@ -2,6 +2,7 @@
     var el_buffer = document.getElementsByClassName('buffering')[0]
     var el_mediaState = document.getElementsByClassName('media-state')[0]
     const video = document.getElementById('video');
+    const new_manifest = document.getElementById("new-manifest")
     const manifestUri = 'h264.mpd';
     console.log(manifestUri)
 
@@ -117,6 +118,10 @@ function loadNewManifest(e) {
     if(player.getAssetUri() === "h264.mpd") loadManifest("on_my_way_64kbps.mpd");
     else loadManifest("h264.mpd");
 }
+
+new_manifest.addEventListener('click', e => {
+    loadNewManifest(e)
+})
 
 //--------------------------------------------------
 
