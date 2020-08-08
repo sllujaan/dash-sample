@@ -40,18 +40,7 @@
         player.addEventListener('error', onErrorEvent);
 
         // Try to load a manifest.
-        // This is an asynchronous process.
-        try {
-            await player.load(manifestUri);
-            // This runs if the asynchronous load is successful.
-            console.log('The video has now been loaded!');
-            console.log(player.getConfiguration())
-            console.log(player)
-            initEvents(player)
-        } catch (e) {
-            // onError is executed if the asynchronous load fails.
-            onError(e);
-        }
+        loadManifest(manifestUri)
     }
 
     function onErrorEvent(event) {
@@ -106,8 +95,49 @@
 
 
 
+//loading other manifests-----------------------------
+async function loadManifest(manifestUri) {
+    // Try to load a manifest.
+        // This is an asynchronous process.
+        try {
+            await player.load(manifestUri);
+            // This runs if the asynchronous load is successful.
+            console.log('The video has now been loaded!');
+            console.log(player.getConfiguration())
+            console.log(player)
+            initEvents(player)
+        } catch (e) {
+            // onError is executed if the asynchronous load fails.
+            onError(e);
+        }
+}
 
-    
+
+function loadNewManifest(e) {
+    if(player.getAssetUri() === "h264.mpd") loadManifest("on_my_way_64kbps.mpd");
+    else loadManifest("h264.mpd");
+}
+
+//--------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
