@@ -2,6 +2,213 @@
 :root {
     --z-index-seeker: 100;
     --z-index-buffer: 50;
+    --dotCircle-right: -9px;
+
+}
+
+
+body {
+    padding: 0;
+    margin: 10px;
+    user-select: none;
+}
+
+
+/* .seeker-container {
+    background-color: orange;
+
+    /* display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent; */
+    /*position: relative;
+    
+} */
+
+
+/* .seeker-container > .seeker {
+    background-color: lightgray;
+    width: 100%;
+    height: 5px;
+
+
+    display: flex;
+    flex-wrap: nowrap;
+
+    border: 1px solid black;
+} */
+
+/* .seeker-container > .seeker > .progress {
+    position: relative;
+    background-color: red;
+    width: 40%;
+    height: 5px;
+
+    z-index: var(--z-index-seeker);
+} */
+
+
+/* .seeker-container > .seeker > .progress::after {
+    content: '';
+
+    background-color: green;
+    position: absolute;
+    height: 18px;
+    width: 18px;
+
+
+    top: -6px;
+    right: var(--dotCircle-right);
+    border-radius: 100%;
+    
+} */
+
+
+
+
+
+
+
+/* buffer code is currently not being used.----------------------- */
+/* .buffer {
+    /* position: absolute; *//*
+    background-color: blueviolet;
+    position: absolute;
+    width: 20px;
+    height: 100%;
+
+    top: 0;
+
+    overflow: hidden;
+
+
+    /* z-index: 2000; *//*
+} */
+/* -----------------------.----------------------- */
+
+
+
+
+
+/*new seeker css---------------------------------------------------*/
+
+.seeker-container {
+    background-color: orange;
+    position: relative;
+    
+}
+
+.seeker-container > .dot-circle {
+    background-color: green;
+    position: absolute;
+    height: 18px;
+    width: 18px;
+
+    /* border-radius: 100%; */
+    top: -6px;
+    left: -6%;
+}
+
+.seeker-container > .seeker {
+    background-color: lightgray;
+    width: 100%;
+    height: 5px;
+
+    /* border: 1px solid black; */
+
+    overflow: hidden;
+}
+
+.seeker-container > .seeker >  .progress {
+    position: absolute;
+    background-color: red;
+    width: 40%;
+    height: 5px;
+
+    z-index: var(--z-index-seeker);
+}
+
+
+/* buffer code is currently not being used.----------------------- */
+.buffer {
+    /* position: absolute; */
+    background-color: blueviolet;
+    position: absolute;
+    width: 20px;
+    height: 100%;
+
+    top: 0;
+
+    overflow: hidden;
+
+
+    /* z-index: 2000; */
+}
+/* -----------------------.----------------------- */
+
+/* -----------------------.----------------------- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+:root {
+    --z-index-seeker: 100;
+    --z-index-buffer: 50;
+    --dotCircle-right: -9px;
 
 }
 
@@ -16,22 +223,21 @@ body {
 .seeker-container {
     background-color: orange;
 
-    display: flex;
+    /* display: flex;
     flex-wrap: nowrap;
     justify-content: center;
     align-items: center;
 
     cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-
-    border: 1px solid black;
+    -webkit-tap-highlight-color: transparent; */
+/*    position: relative;
     
 }
 
 
 .seeker-container > .seeker {
     /* position: relative; */
-    background-color: lightgray;
+/*    background-color: lightgray;
     width: 100%;
     height: 5px;
 
@@ -39,6 +245,7 @@ body {
     display: flex;
     flex-wrap: nowrap;
 
+    border: 1px solid black;
 }
 
 .seeker-container > .seeker > .progress {
@@ -61,7 +268,7 @@ body {
 
 
     top: -6px;
-    right: -9px;
+    right: var(--dotCircle-right);
     border-radius: 100%;
     
 }
@@ -72,9 +279,9 @@ body {
 
 
 
-/* buffer code is currently not being used.----------------------- */
+/* buffer code is currently not being used.----------------------- *//*
 .buffer {
-    /* position: absolute; */
+    /* position: absolute; *//*
     background-color: blueviolet;
     position: absolute;
     width: 20px;
@@ -85,9 +292,6 @@ body {
     overflow: hidden;
 
 
-    /* z-index: 2000; */
+    /* z-index: 2000; *//*
 }
 /* -----------------------.----------------------- */
-
-
-
