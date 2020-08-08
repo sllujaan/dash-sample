@@ -1,8 +1,9 @@
 
 :root {
+    --z-index-dot-circle: 150;
     --z-index-progress: 100;
     --z-index-buffer: 50;
-    --dotCircle-right: -9px;
+
 
 }
 
@@ -111,6 +112,8 @@ body {
     border-radius: 100%;
     top: -6px;
     left: -6%;
+
+    z-index: var(--z-index-dot-circle);
 }
 
 .seeker-container > .seeker {
@@ -129,7 +132,7 @@ body {
     width: 40%;
     height: 5px;
 
-    /* z-index: var(--z-index-seeker); */
+    z-index: var(--z-index-progress);
 }
 
 
@@ -146,7 +149,7 @@ body {
     overflow: hidden;
 
 
-    /* z-index: 2000; */
+    z-index: var(--z-index-buffer);
 }
 /* -----------------------.----------------------- */
 
