@@ -139,9 +139,10 @@ const progressCompStyles = window.getComputedStyle(progress)
 
 const seeker_containerWidth = parseFloat(seeker_containerCompStyles.getPropertyValue('width').split('px')[0])
 
-const DOT_CIRCLE_OFFSET = -9
+//const DOT_CIRCLE_OFFSET = -9
 const dot_width = getElementWidth(dot_circle)
-console.log(dot_width)
+const dot_center = dot_width / 2
+console.log(dot_center)
 
 
 
@@ -194,15 +195,24 @@ function setProgressClient(clientX, totalWidth) {
 }
 
 function setProgressDotCircle(clientX, totalWidth) {
-    console.log(totalWidth)
     //const percentage = pxToPercent((clientX + 1), totalWidth)
-    var clientX_new = clientX - DOT_CIRCLE_OFFSET
+    const clientX_new = clientX - dot_center
     const containerOffset = getContainerOffset()
-    if( (clientX >=  containerOffset-9) && (clientX <= totalWidth)) dot_circle.style.setProperty('left', `${clientX_new}px`)
+    if( (clientX >=  0) && (clientX <= totalWidth)) dot_circle.style.setProperty('left', `${clientX_new}px`)
     //return percentage
+    //(clientX >=  containerOffset) && 
 }
 
+function changeDotPxToPercentage() {
+    const seeker_containerWidth = getSeekerContainerWidth()
+    const dot_left = getElmentLeft(dot_circle)// + dot_center
+    const percentage = pxToPercent(dot_left, seeker_containerWidth)
+    console.log(percentage)
+    dot_circle.style.setProperty('left', `${percentage}%`)
 
+    //setProgressPercentage(percentage)
+
+}
 
 
 function pxToPercent(pixels, width) {
@@ -219,12 +229,30 @@ function setProgressPercentage(percentage) {
     progress.style.setProperty('width', `${percentage}%`)
 }
 
-function getElementWidth(element) {
-    const compStyles = window.getComputedStyle(element)
-    const width = parseFloat(compStyles.getPropertyValue('width').split('px')[0])
-    return width
+function updateDotCircle() {
+
+    const width = getElementWidth(progress) - dot_center
+    dot_circle.style.setProperty('left', `${width}px`)
 }
 
+
+function getElementWidth(element) {
+    const compStyles = window.getComputedStyle(element);
+    const width = parseFloat(compStyles.getPropertyValue('width').split('px')[0]);
+    return width;
+}
+
+function getElmentLeft(element) {
+    const compStyles = window.getComputedStyle(element);
+    const left = parseFloat(compStyles.getPropertyValue('left').split('px')[0]);
+    return left;
+}
+
+function getElmentRight(element) {
+    const compStyles = window.getComputedStyle(element);
+    const right = parseFloat(compStyles.getPropertyValue('right').split('px')[0]);
+    return right;
+}
 
 
 
@@ -315,6 +343,7 @@ document.addEventListener('mousemove', e => {
         const clientX = e.clientX - getContainerOffset()
         //setProgressClient(clientX, seeker_containerWidth)
         //setProgressDotCircle(clientX, seeker_containerWidth)
+        setProgressDotCircle(clientX, seeker_containerWidth)
     }
     
     console.log('mousemove')
@@ -397,6 +426,14 @@ document.addEventListener('touchstart', e => {
 //---------------------------------------------------------------------
 
 
+//window resize event---------------
+window.addEventListener('resize', e => {
+    console.log("resize")
+    updateDotCircle()
+})
+//---------------------
+
+
 
 // function play() {
 //     var width = 0
@@ -443,8 +480,8 @@ audio.addEventListener('playing', e => {
 audio.addEventListener('timeupdate', e => {
     console.log('timeupdatedd...')
 
-    //if(!progressDragging)
     handleProgressBar(audio.currentTime, audio.duration)
+    if(!progressDragging) updateDotCircle()
 
     console.log(player.getBufferedInfo().total[0])
     bufferStart = player.getBufferedInfo().total[0].start
@@ -462,8 +499,8 @@ function handleProgressBar(currentValue, totalValue) {
     console.log(percentage)
     if(!percentage) return
 
-    setProgressWidth(percentage)
-    
+    //setProgressWidth(percentage)
+    setProgressPercentage(percentage)
     //setProgressWidth()
 }
 
