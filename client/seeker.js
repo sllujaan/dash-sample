@@ -154,7 +154,7 @@ console.log(progress)
 
 
 seeker_container.addEventListener('click', e => {
-
+    console.log('(((((((((((click)))))))))))')
     const seeker_containerWidth = getSeekerContainerWidth()
     //progress.style.setProperty('width', `${e.clientX + 1}px`)
     const clientX = e.clientX - getContainerOffset()
@@ -189,7 +189,8 @@ function setProgressWidth(percentage) {
 }
 
 function setProgressClient(clientX, totalWidth) {
-    const percentage = pxToPercent((clientX + 1), totalWidth)
+    const percentage = pxToPercent((clientX), totalWidth)
+    console.log(percentage)
     progress.style.setProperty('width', `${percentage}%`)
     return percentage
 }
@@ -233,6 +234,18 @@ function updateDotCircle() {
 
     const width = getElementWidth(progress) - dot_center
     dot_circle.style.setProperty('left', `${width}px`)
+}
+
+function handleOnMouseup() {
+    console.log('mouseup------------------')
+    console.log(getElmentLeft(dot_circle) + dot_center)
+    
+    const seeker_containerWidth = getSeekerContainerWidth()
+    const left = getElmentLeft(dot_circle) + dot_center
+    
+    const percentage = setProgressClient(left, seeker_containerWidth)
+    
+    updateTime(percentage)
 }
 
 
@@ -296,6 +309,8 @@ seeker_container.addEventListener('mouseup', e => {
     mousedown = false
     mousemove = false
     progressDragging = false
+
+    handleOnMouseup()
 })
 //-----------------------------------
 
@@ -315,6 +330,8 @@ document.addEventListener('mouseup', e => {
     updateTime(percentage)
     
     progressDragging = false
+
+    handleOnMouseup()
 })
 
 document.addEventListener('dragleave', e => {
