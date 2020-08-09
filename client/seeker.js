@@ -338,14 +338,17 @@ seeker_container.addEventListener('mouseup', e => {
 
     //do the stuff on mouse up
 
-    console.log('mouseup')
+    console.log('mouseup seeker')
 
     //clear mouse variables
+
+    if(mousedown && mousemove) handleOnMouseup()
+
     mousedown = false
     mousemove = false
     progressDragging = false
 
-    handleOnMouseup()
+    
 })
 //-----------------------------------
 
@@ -357,32 +360,34 @@ document.addEventListener('mouseup', e => {
 
     console.log('mouseup')
 
-    //clear mouse variables
-    mousedown = false
-    mousemove = false
-
-    const percentage = getProgressWidthPercentage()
-    updateTime(percentage)
-    
-    progressDragging = false
-
-    handleOnMouseup()
-})
-
-document.addEventListener('dragleave', e => {
-
-    //do the stuff on mouse up
-
-    console.log('mouseup')
+    if(mousedown && mousemove) handleOnMouseup()
 
     //clear mouse variables
     mousedown = false
     mousemove = false
-    const percentage = getProgressWidthPercentage()
-    updateTime(percentage)
+
+    //const percentage = getProgressWidthPercentage()
+    //updateTime(percentage)
     
     progressDragging = false
+
+    //handleOnMouseup()
 })
+
+// document.addEventListener('dragleave', e => {
+
+//     //do the stuff on mouse up
+
+//     console.log('mouseup')
+
+//     //clear mouse variables
+//     mousedown = false
+//     mousemove = false
+//     //const percentage = getProgressWidthPercentage()
+//     //updateTime(percentage)
+    
+//     progressDragging = false
+// })
 
 document.addEventListener('mousemove', e => {
     mousemove = true
@@ -438,14 +443,16 @@ seeker_container.addEventListener('touchcancel', e => {
 
     console.log('touchcancel')
 
+    if(mousedown && mousemove) handleOnMouseup()
+
     //clear mouse variables
     mousedown = false
     mousemove = false
-    const percentage = getProgressWidthPercentage()
-    updateTime(percentage)
+    //const percentage = getProgressWidthPercentage()
+    //updateTime(percentage)
     
     progressDragging = false
-    handleOnMouseup()
+    //handleOnMouseup()
 })
 
 document.addEventListener('touchend', e => {
@@ -454,14 +461,16 @@ document.addEventListener('touchend', e => {
 
     console.log('mouseup')
 
+    if(mousedown && mousemove) handleOnMouseup()
+
     //clear mouse variables
     mousedown = false
     mousemove = false
-    const percentage = getProgressWidthPercentage()
-    updateTime(percentage)
+    //const percentage = getProgressWidthPercentage()
+    //updateTime(percentage)
     
     progressDragging = false
-    handleOnMouseup()
+    //handleOnMouseup()
 })
 
 

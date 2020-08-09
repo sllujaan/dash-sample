@@ -100,7 +100,6 @@ body {
     background-color: orange;
     position: relative;
     cursor: pointer;
-    
 }
 
 .seeker-container > .dot-circle {
@@ -115,6 +114,7 @@ body {
 
     z-index: var(--z-index-dot-circle);
 }
+
 
 .seeker-container > .seeker {
     background-color: lightgray;
