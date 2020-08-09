@@ -101,7 +101,10 @@ async function loadManifest(manifestUri) {
     // Try to load a manifest.
         // This is an asynchronous process.
         try {
+            disablePlayer();
             await player.load(manifestUri);
+            enablePlayer()
+            audio.play()
             // This runs if the asynchronous load is successful.
             console.log('The video has now been loaded!');
             console.log(player.getConfiguration())
@@ -110,6 +113,7 @@ async function loadManifest(manifestUri) {
         } catch (e) {
             // onError is executed if the asynchronous load fails.
             onError(e);
+            disablePlayer()
         }
 }
 
@@ -338,14 +342,17 @@ seeker_container.addEventListener('mouseup', e => {
 
     //do the stuff on mouse up
 
-    console.log('mouseup')
+    console.log('mouseup seeker')
 
     //clear mouse variables
+
+    if(mousedown && mousemove) handleOnMouseup()
+
     mousedown = false
     mousemove = false
     progressDragging = false
 
-    handleOnMouseup()
+    
 })
 //-----------------------------------
 
@@ -357,32 +364,34 @@ document.addEventListener('mouseup', e => {
 
     console.log('mouseup')
 
-    //clear mouse variables
-    mousedown = false
-    mousemove = false
-
-    const percentage = getProgressWidthPercentage()
-    updateTime(percentage)
-    
-    progressDragging = false
-
-    handleOnMouseup()
-})
-
-document.addEventListener('dragleave', e => {
-
-    //do the stuff on mouse up
-
-    console.log('mouseup')
+    if(mousedown && mousemove) handleOnMouseup()
 
     //clear mouse variables
     mousedown = false
     mousemove = false
-    const percentage = getProgressWidthPercentage()
-    updateTime(percentage)
+
+    //const percentage = getProgressWidthPercentage()
+    //updateTime(percentage)
     
     progressDragging = false
+
+    //handleOnMouseup()
 })
+
+// document.addEventListener('dragleave', e => {
+
+//     //do the stuff on mouse up
+
+//     console.log('mouseup')
+
+//     //clear mouse variables
+//     mousedown = false
+//     mousemove = false
+//     //const percentage = getProgressWidthPercentage()
+//     //updateTime(percentage)
+    
+//     progressDragging = false
+// })
 
 document.addEventListener('mousemove', e => {
     mousemove = true
@@ -438,14 +447,16 @@ seeker_container.addEventListener('touchcancel', e => {
 
     console.log('touchcancel')
 
+    if(mousedown && mousemove) handleOnMouseup()
+
     //clear mouse variables
     mousedown = false
     mousemove = false
-    const percentage = getProgressWidthPercentage()
-    updateTime(percentage)
+    //const percentage = getProgressWidthPercentage()
+    //updateTime(percentage)
     
     progressDragging = false
-    handleOnMouseup()
+    //handleOnMouseup()
 })
 
 document.addEventListener('touchend', e => {
@@ -454,14 +465,16 @@ document.addEventListener('touchend', e => {
 
     console.log('mouseup')
 
+    if(mousedown && mousemove) handleOnMouseup()
+
     //clear mouse variables
     mousedown = false
     mousemove = false
-    const percentage = getProgressWidthPercentage()
-    updateTime(percentage)
+    //const percentage = getProgressWidthPercentage()
+    //updateTime(percentage)
     
     progressDragging = false
-    handleOnMouseup()
+    //handleOnMouseup()
 })
 
 
@@ -536,6 +549,8 @@ audio.addEventListener('playing', e => {
 audio.addEventListener('timeupdate', e => {
     console.log('timeupdatedd...')
 
+    if(!audio.duration) return
+
     handleProgressBar(audio.currentTime, audio.duration)
     if(!progressDragging) updateDotCircle()
 
@@ -547,7 +562,6 @@ audio.addEventListener('timeupdate', e => {
 
 })
 //----------
-
 
 
 function handleProgressBar(currentValue, totalValue) {
@@ -609,8 +623,28 @@ console.log(buffer_seeker)
 
 
 
+//player reset functions-------------------------------
+function resetPlayer() {
+    progress.style.setProperty('width', '0%');
+    buffer_seeker.style.setProperty('width', '0%');
+    buffer_seeker.style.setProperty('left', '0%');
+    updateDotCircle();
+}
 
-updateDotCircle()
+function disablePlayer() {
+    resetPlayer();
+    seeker_container.style.setProperty('pointer-events', 'none');
+}
+
+function enablePlayer() {
+    resetPlayer();
+    seeker_container.style.setProperty('pointer-events', 'all');
+}
+//------------------------------
+
+//resetPlayer()
+//disablePlayer()
+enablePlayer()
 
 
 
