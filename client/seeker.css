@@ -115,7 +115,6 @@ body {
     z-index: var(--z-index-dot-circle);
 }
 
-
 .seeker-container > .seeker {
     background-color: lightgray;
     width: 100%;
